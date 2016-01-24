@@ -1,0 +1,4 @@
+export const ERR_NEED_OBJECT = 'ERR_NEED_OBJECT';
+export const ERR_NEED_MAP = 'ERR_NEED_MAP';
+export const ERR_UNWRAP_NOTHING = 'ERR_UNWRAP_NOTHING';
+export const ERR_NEED_FUNCTION = 'ERR_NEED_FUNCTION';
