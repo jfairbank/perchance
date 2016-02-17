@@ -9,7 +9,7 @@ gracefully with a maybe monad similar to functional languages like Haskell.
 
 ## Usage
 
-Perchance comes with three functions, `maybe`, `Just`, and `Nothing`. You can
+Perchance comes with two monads and six functions, `maybe`, `Just`, and `Nothing` and `either`, `Right`, and `Left`. You can
 use these functions to create more functional code that avoids lots of if-else
 checks for `null` or `undefined`. The real beauty of the maybe monad comes from
 being able to wrap a value, apply transformations to it, and then unwrap the
@@ -93,6 +93,34 @@ maybe(half(5))
     _ => 'Could not halve integer'
   ); // returns 'Could not halve integer'
 ```
+
+### `either`
+
+The `either` monad is made up of `Right` and `Left`.  Typically a `Right` value signifies a  successful operation while a `Left` value represents that something went wrong.  It is common for the `value` of a `Left` value to contain information about the failure.  Unlike `Just` it is possible, though not recommended, to have a function that returns `Right(null)`.  In other words, `Right(null)` is not automatically transformed into a `Left`.  Once a value has become a `Left`, no further action will be taken upon the value which allows us to write our happy path and deal with any errors when we unwrap the monad.
+
+```js
+const divide = (b) => 
+     (a) => b !== 0 ? Right(a/b) : Left(`cannot divide ${a} by 0`)
+
+either(42)
+  .bind(divide(2))
+  .bind(divide(7))
+  .unwrap(
+    success => alert(`Value is ${success}`),
+    failure => alert(failure)
+  )
+//value is 3
+
+either(20)
+  .bind(divide(0))
+  .bind(divide(2))
+  .unwrap(
+    success => alert(`Value is ${success}`),
+    failure => alert(failure)
+  )
+//cannot divide 20 by 0
+```
+
 
 ## API
 
@@ -209,3 +237,105 @@ _Nothing<T>
 _Nothing<T>
   #unwrap(fn: () => T): T
 ```
+
+
+### `either`
+
+```js
+either(value: T): _Right<T>
+```
+
+### `Right`
+
+```js
+Right(value: T): _Right<T>
+```
+
+### `_Right#map`
+
+Performs the given function on the wrapped value, returning a new instance of `_Right`.
+
+alias: `fmap`
+
+```js
+_Right<T>
+  #map(fn: (value: T) => U): _Right<U>
+```
+
+### `_Right#ap`
+
+Applies a wrapped function to the wrapped value of another `_Right` instance or a
+no-op if passed `_Left`.
+
+alias: `apply`
+
+```js
+_Right<fn: (value: T) => U>
+  #ap(mappable: _Left): _Left
+
+_Right<fn: (value: T) => U>
+  #ap(mappable: _Right<T>): _Right<U>
+```
+
+### `_Right#bind`
+
+Takes a function that returns an `either`, applies that function to
+the wrapped value, and returns a new `_Right` with that wrapped value (or
+a `_Left` if the function argument returned a `_Left`).
+
+```js
+_Right<T>
+  #bind(fn: (value: T) => _Right<U>): _Right<U>
+
+_Right<T>
+  #bind(fn: (value: T) => _Left<U>): _Left<U>
+```
+
+### `_Right#unwrap`
+
+Invokes and returns the return value of the first function argument.
+
+```js
+_Right<T>
+  #unwrap(fn: (value: T) => U, _): U
+```
+
+### `Left`
+
+```js
+Left(value: T): _Left<T>
+```
+
+### `_Left` methods
+
+```js
+_Left<T>
+  #map(fn: (value: T) => U): _Left(value: T)
+
+_Left<fn: (value: T) => U>
+  #ap(mappable: any): _Left(value: T)
+
+_Left<T>
+  #bind(fn: (value: T) => either<U>): _Left(value: T)
+```
+
+### `_Left#unwrap`
+
+Invokes and returns the return value of the second function argument. Throws an
+error if the second function argument is missing.
+
+```js
+_Left<T>
+  #unwrap(_, fn: () => T): T
+```
+
+
+## Contributing
+
+1. Fork repo
+2. Install a current version of node
+3. Install dependencies with `npm install`
+4. Add feature or bug fix
+5. Add tests in test directory if necessary
+6. Run tests with `npm test`
+7. Submit PR.

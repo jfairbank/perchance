@@ -2,8 +2,6 @@ import test from 'ava';
 import alias from '../../src/util/alias';
 
 test('aliases the given methods to an existing method on the object', t => {
-  t.plan(3);
-
   const object = {
     foo() { return 'foo'; }
   };
