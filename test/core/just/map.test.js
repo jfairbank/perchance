@@ -6,8 +6,6 @@ import Nothing from '../../../src/core/nothing';
 const value = 42;
 
 test('returns a new Just', t => {
-  t.plan(1);
-
   const wrapped = Just(value);
   const mapped = wrapped.map(double);
 
@@ -15,8 +13,6 @@ test('returns a new Just', t => {
 });
 
 test('does not mutate the original Just', t => {
-  t.plan(1);
-
   const wrapped = Just(value);
 
   wrapped.map(double);
@@ -25,8 +21,6 @@ test('does not mutate the original Just', t => {
 });
 
 test('wraps the mapped value', t => {
-  t.plan(1);
-
   t.is(
     Just(value).map(double).value,
     double(value)
@@ -34,8 +28,6 @@ test('wraps the mapped value', t => {
 });
 
 test('returns Nothing when mapping to null', t => {
-  t.plan(1);
-
   t.is(
     Just(value).map(() => null),
     Nothing()
@@ -43,8 +35,6 @@ test('returns Nothing when mapping to null', t => {
 });
 
 test('returns Nothing when mapping to undefined', t => {
-  t.plan(1);
-
   t.is(
     Just(value).map(() => undefined),
     Nothing()

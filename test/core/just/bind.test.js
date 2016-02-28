@@ -8,8 +8,6 @@ const value = 42;
 const add2 = n => Just(n + 2);
 
 test('chaining maybe returning functions', t => {
-  t.plan(1);
-
   t.is(
     Just(value)
       .bind(half)
@@ -21,8 +19,6 @@ test('chaining maybe returning functions', t => {
 });
 
 test('a Nothing in the chain returns Nothing', t => {
-  t.plan(1);
-
   t.is(
     Just(5)
       .bind(half)
@@ -33,8 +29,6 @@ test('a Nothing in the chain returns Nothing', t => {
 });
 
 test('returns the return value of the passed in function', t => {
-  t.plan(1);
-
   t.is(
     Just(value).bind(double),
     double(value)
