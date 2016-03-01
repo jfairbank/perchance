@@ -24,19 +24,7 @@ class _Left {
   }
 
   ap(m) {
-    invariant(
-      isObject(m),
-      'Can only apply to objects',
-      ERR_NEED_OBJECT
-    );
-
-    invariant(
-      'map' in m,
-      'Can only apply to objects with a `map` method',
-      ERR_NEED_MAP
-    );
-
-    return m.map(this.value);
+    return stayLeft();
   }
 
   bind(fn) {
