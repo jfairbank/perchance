@@ -19,22 +19,12 @@ class _Left {
     return Left(this.value);
   }
 
-  map(fn) {
-    return stayLeft();
-  }
-
-  ap(m) {
-    return stayLeft();
-  }
-
-  bind(fn) {
-    return stayLeft();
-  }
-
-  unwrap(fn) {
-    if (fn === undefined) {
-      return this.value;
-    }
+  unwrap(_, fn) {
+    invariant(
+      fn !== undefined,
+      'Can only unwrap Right',
+      ERR_UNWRAP_NOTHING
+    );
 
     invariant(
       isFunction(fn),
@@ -42,7 +32,7 @@ class _Left {
       ERR_NEED_FUNCTION
     );
 
-    return fn(this.value);
+    return fn();
   }
 
   toString() {
@@ -50,7 +40,7 @@ class _Left {
   }
 }
 
-alias(_Left.prototype, ['fmap'], 'map');
+alias(_Left.prototype, ['fmap','map', 'apply', 'ap'], 'stayLeft');
 alias(_Left.prototype, ['apply'], 'ap');
 alias(_Left.prototype, ['inspect'], 'toString');
 
