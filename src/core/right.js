@@ -18,8 +18,7 @@ class _Right {
 
   map(fn) {
     if (isLeft(this.value)) return Left(this.value);
-    let result = fn(this.value);
-    return isRight(result) ? Right(result) : Left(result);
+    return Right(fn(this.value));
   }
 
   ap(m) {
