@@ -9,8 +9,6 @@ import { ERR_UNWRAP_NOTHING, ERR_NEED_FUNCTION } from '../../src/core/errorTypes
 const value = 42;
 
 test('map returns Nothing', t => {
-  t.plan(1);
-
   t.is(
     Nothing().map(double),
     Nothing()
@@ -18,8 +16,6 @@ test('map returns Nothing', t => {
 });
 
 test('ap returns Nothing', t => {
-  t.plan(1);
-
   t.is(
     Nothing().ap(Just(value)),
     Nothing()
@@ -27,8 +23,6 @@ test('ap returns Nothing', t => {
 });
 
 test('bind returns Nothing', t => {
-  t.plan(2);
-
   t.is(
     Nothing().bind(double),
     Nothing(),
@@ -43,8 +37,6 @@ test('bind returns Nothing', t => {
 });
 
 test('unwrap throws an error without the second function', t => {
-  t.plan(1);
-
   t.throws(
     () => Nothing().unwrap(),
     new RegExp(ERR_UNWRAP_NOTHING)
@@ -53,8 +45,6 @@ test('unwrap throws an error without the second function', t => {
 
 test('unwrap throws an error if the second argument is not a function', t => {
   const args = [value, 'hello', {}, [], NaN, null];
-
-  t.plan(args.length);
 
   args.forEach(arg => {
     t.throws(
@@ -66,8 +56,6 @@ test('unwrap throws an error if the second argument is not a function', t => {
 });
 
 test('unwrap returns the return value of the second function', t => {
-  t.plan(1);
-
   t.is(
     Nothing().unwrap(
       v => v,
@@ -79,8 +67,6 @@ test('unwrap returns the return value of the second function', t => {
 });
 
 test('does not call the first function', t => {
-  t.plan(1);
-
   const spy = sinon.spy();
 
   Nothing().unwrap(

@@ -7,19 +7,13 @@ const functionWillThrow = () => invariant(false, errorMessage, errorType);
 const functionWillNotThrow = () => invariant(true, errorMessage, errorType);
 
 test('it throws an error for a falsey value', t => {
-  t.plan(1);
-
   t.throws(functionWillThrow);
 });
 
 test('it throws an error with the included error type and message', t => {
-  t.plan(1);
-
   t.throws(functionWillThrow, new RegExp(`${errorType}: ${errorMessage}`));
 });
 
 test('it does throw for a truthy value', t => {
-  t.plan(1);
-
   t.doesNotThrow(functionWillNotThrow);
 });

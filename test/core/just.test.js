@@ -5,8 +5,6 @@ import Nothing from '../../src/core/nothing';
 const value = 42;
 
 test('wraps a value', t => {
-  t.plan(1);
-
   t.is(
     Just(value).value,
     value
@@ -14,8 +12,6 @@ test('wraps a value', t => {
 });
 
 test('the value cannot be changed', t => {
-  t.plan(2);
-
   const j = Just(value);
 
   t.throws(() => j.value = 'hello');
@@ -23,13 +19,9 @@ test('the value cannot be changed', t => {
 });
 
 test('wrapping null returns Nothing', t => {
-  t.plan(1);
-
   t.is(Just(null), Nothing());
 });
 
 test('wrapping undefined returns Nothing', t => {
-  t.plan(1);
-
   t.is(Just(undefined), Nothing());
 });
