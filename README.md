@@ -209,3 +209,13 @@ _Nothing<T>
 _Nothing<T>
   #unwrap(fn: () => T): T
 ```
+
+## Contributing
+
+1. Fork repo
+2. Install a current version of node
+3. Install dependencies with `npm install`
+4. Add feature or bug fix
+5. Add tests in test directory if necessary
+6. Run tests with `npm test`
+7. Submit PR.
