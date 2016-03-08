@@ -20,19 +20,7 @@ class _Left {
   }
 
   unwrap(_, fn) {
-    invariant(
-      fn !== undefined,
-      'Can only unwrap Right',
-      ERR_UNWRAP_NOTHING
-    );
-
-    invariant(
-      isFunction(fn),
-      'Need function to unwrap Left',
-      ERR_NEED_FUNCTION
-    );
-
-    return fn();
+    return isFunction(fn) ? fn(this.value) : this.value;
   }
 
   toString() {

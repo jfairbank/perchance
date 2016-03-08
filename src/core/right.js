@@ -42,18 +42,8 @@ class _Right {
     return fn(this.value);
   }
 
-  unwrap(fn) {
-    if (fn === undefined) {
-      return this.value;
-    }
-
-    invariant(
-      isFunction(fn),
-      'Need function to unwrap Right',
-      ERR_NEED_FUNCTION
-    );
-
-    return fn(this.value);
+  unwrap(fn,_) {
+    return isFunction(fn) ? fn(this.value) : this.value;
   }
 
   toString() {
