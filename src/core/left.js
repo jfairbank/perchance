@@ -28,11 +28,11 @@ class _Left {
   }
 }
 
-alias(_Left.prototype, ['fmap','map', 'apply', 'ap'], 'stayLeft');
+alias(_Left.prototype, ['fmap','map', 'apply', 'ap', 'bind'], 'stayLeft');
 alias(_Left.prototype, ['apply'], 'ap');
 alias(_Left.prototype, ['inspect'], 'toString');
 
-export default function Left(value) {
+export function Left(value) {
   return new _Left(value);
 }
 

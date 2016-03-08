@@ -55,7 +55,7 @@ alias(_Right.prototype, ['fmap'], 'map');
 alias(_Right.prototype, ['apply'], 'ap');
 alias(_Right.prototype, ['inspect'], 'toString');
 
-export default function Right(value) {
+export function Right(value) {
   return new _Right(value);
 }
 
