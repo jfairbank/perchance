@@ -9,7 +9,7 @@ gracefully with a maybe monad similar to functional languages like Haskell.
 
 ## Usage
 
-Perchance comes with three functions, `maybe`, `Just`, and `Nothing`. You can
+Perchance comes with two monads and six functions, `maybe`, `Just`, and `Nothing` and `either`, `Right`, and `Left`. You can
 use these functions to create more functional code that avoids lots of if-else
 checks for `null` or `undefined`. The real beauty of the maybe monad comes from
 being able to wrap a value, apply transformations to it, and then unwrap the
@@ -93,6 +93,37 @@ maybe(half(5))
     _ => 'Could not halve integer'
   ); // returns 'Could not halve integer'
 ```
+
+### `either`
+
+The `either` monad is made up of `Right` and `Left`.  Typically a `Right` value signifies a  successful operation while a `Left` value represents that something went wrong.  It is common for the `value` of a `Left` value to contain information about the failure.  Unlike `Just` it is possible, though not recommended, to have a function that returns `Right(null)`.  In other words, `Right(null)` is not automatically coalesced into a `Left`.  Once a value has become a `Left`, no further action will be taken upon the value which allows us to write our happy path and deal with any errors when we unwrap the monad.
+
+```js
+function divide(b){
+  return function(a) {
+    return b != 0 ? Right(a/b) : Left(`cannot divide ${a} by 0`);
+  };
+};
+
+either(42)
+  .bind(divide(2))
+  .bind(divide(7))
+  .unwrap(
+    success => alert(`Value is ${success}`),
+    failure => alert(failure)
+  )
+//value is 3
+
+either(20)
+  .bind(divide(0))
+  .bind(divide(2))
+  .unwrap(
+    success => alert(`Value is ${success}`),
+    failure => alert(failure)
+  )
+//cannot divide 20 by 0
+```
+
 
 ## API
 
