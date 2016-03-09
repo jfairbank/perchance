@@ -241,6 +241,98 @@ _Nothing<T>
   #unwrap(fn: () => T): T
 ```
 
+
+### `either`
+
+```js
+either(value: T): _Right<T>
+```
+
+### `Right`
+
+```js
+Right(value: T): _Right<T>
+```
+
+### `_Right#map`
+
+Performs the given function on the wrapped value, returning a new instance of `_Right`.
+
+alias: `fmap`
+
+```js
+_Right<T>
+  #map(fn: (value: T) => U): _Right<U>
+```
+
+### `_Right#ap`
+
+Applies a wrapped function to the wrapped value of another `_Right` instance or a
+no-op if passed `_Left`.
+
+alias: `apply`
+
+```js
+_Right<fn: (value: T) => U>
+  #ap(mappable: _Left): _Left
+
+_Right<fn: (value: T) => U>
+  #ap(mappable: _Right<T>): _Right<U>
+```
+
+### `_Right#bind`
+
+Takes a function that returns an `either`, applies that function to
+the wrapped value, and returns a new `_Right` with that wrapped value (or
+a `_Left` if the function argument returned a `_Left`).
+
+```js
+_Right<T>
+  #bind(fn: (value: T) => _Right<U>): _Right<U>
+
+_Right<T>
+  #bind(fn: (value: T) => _Left<U>): _Left<U>
+```
+
+### `_Right#unwrap`
+
+Invokes and returns the return value of the first function argument.
+
+```js
+_Right<T>
+  #unwrap(fn: (value: T) => U, _): U
+```
+
+### `Left`
+
+```js
+Left(value: T): _Left<T>
+```
+
+### `_Left` methods
+
+```js
+_Left<T>
+  #map(fn: (value: T) => U): _Left(value: T)
+
+_Left<fn: (value: T) => U>
+  #ap(mappable: any): _Left(value: T)
+
+_Left<T>
+  #bind(fn: (value: T) => either<U>): _Left(value: T)
+```
+
+### `_Left#unwrap`
+
+Invokes and returns the return value of the second function argument. Throws an
+error if the second function argument is missing.
+
+```js
+_Left<T>
+  #unwrap(_, fn: () => T): T
+```
+
+
 ## Contributing
 
 1. Fork repo
