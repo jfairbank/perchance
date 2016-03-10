@@ -99,7 +99,7 @@ maybe(half(5))
 The `either` monad is made up of `Right` and `Left`.  Typically a `Right` value signifies a  successful operation while a `Left` value represents that something went wrong.  It is common for the `value` of a `Left` value to contain information about the failure.  Unlike `Just` it is possible, though not recommended, to have a function that returns `Right(null)`.  In other words, `Right(null)` is not automatically transformed into a `Left`.  Once a value has become a `Left`, no further action will be taken upon the value which allows us to write our happy path and deal with any errors when we unwrap the monad.
 
 ```js
-const div = (b) => 
+const divide = (b) => 
      (a) => b !== 0 ? Right(a/b) : Left(`cannot divide ${a} by 0`)
 
 either(42)
