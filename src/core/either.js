@@ -1,5 +1,2 @@
-import Right from './right';
-
-export default function either(value) {
-  return Right(value);
-}
+import { Right } from './right';
+export default x => Right(x);
