@@ -2,7 +2,7 @@
   "name": "perchance",
   "version": "1.0.1",
   "description": "A simple maybe monad for JavaScript",
-  "main": "lib/perchance.js",
+  "main": "lib/index.js",
   "files": [
     "src",
     "lib"
@@ -10,8 +10,10 @@
   "scripts": {
     "build": "babel src --out-dir lib",
     "clean": "rm -rf lib",
+    "lint": "eslint src __tests__",
     "prepublish": "npm run clean && npm run build",
-    "test": "ava"
+    "test": "jest",
+    "test:watch": "jest --watch"
   },
   "repository": {
     "type": "git",
@@ -27,18 +29,34 @@
   "author": "Jeremy Fairbank <elpapapollo@gmail.com> (http://jeremyfairbank.com)",
   "license": "MIT",
   "dependencies": {
-    "deep-freeze": "0.0.1",
     "invariant": "^2.2.0",
-    "lodash": "^4.0.0"
+    "lodash": "^4.17.3",
+    "util-inspect": "^0.1.8"
   },
   "devDependencies": {
-    "ava": "^0.11.0",
     "babel-cli": "^6.4.5",
     "babel-core": "^6.4.5",
+    "babel-jest": "^18.0.0",
+    "babel-plugin-transform-export-extensions": "^6.8.0",
     "babel-preset-es2015": "^6.3.13",
-    "sinon": "^1.17.2"
+    "eslint": "^3.12.2",
+    "eslint-config-airbnb-base": "^11.0.0",
+    "eslint-import-resolver-node": "^0.3.0",
+    "eslint-plugin-import": "^2.2.0",
+    "estraverse-fb": "^1.3.1",
+    "flow": "^0.2.3",
+    "jest": "^18.1.0"
   },
-  "ava": {
-    "require": "babel-core/register"
+  "jest": {
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+      "src/**/*.js"
+    ],
+    "coverageReporters": [
+      "json",
+      "lcov",
+      "text-summary"
+    ],
+    "testRegex": "__tests__/.*\\.test\\.js$"
   }
 }
