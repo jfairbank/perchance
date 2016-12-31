@@ -1,9 +1,6 @@
-import isObject from 'lodash/isObject';
-import isFunction from 'lodash/isFunction';
 import inspect from 'util-inspect';
 import NothingImpl from './nothing-impl';
-import { alias, ifValue, invariant } from '../../utils';
-import { ERR_NEED_OBJECT, ERR_NEED_MAP, ERR_NEED_FUNCTION } from '../errorTypes';
+import { alias, ifValue } from '../../utils';
 
 export default class Just {
   constructor(value) {
@@ -24,35 +21,17 @@ export default class Just {
   }
 
   ap(m) {
-    invariant(
-      isObject(m),
-      'Can only apply to objects',
-      ERR_NEED_OBJECT,
-    );
-
-    invariant(
-      'map' in m,
-      'Can only apply to objects with a `map` method',
-      ERR_NEED_MAP,
-    );
-
-    return m.map(this.value);
+    return m.map(fn => fn(this.value));
   }
 
-  bind(fn) {
+  then(fn) {
     return fn(this.value);
   }
 
   unwrap(fn) {
-    if (fn === undefined) {
+    if (typeof fn === 'undefined') {
       return this.value;
     }
-
-    invariant(
-      isFunction(fn),
-      'Need function to unwrap Just',
-      ERR_NEED_FUNCTION,
-    );
 
     return fn(this.value);
   }
@@ -74,7 +53,6 @@ export default class Just {
   }
 }
 
-alias(Just.prototype, ['fmap'], 'map');
 alias(Just.prototype, ['apply'], 'ap');
-alias(Just.prototype, ['andThen'], 'bind');
+alias(Just.prototype, ['bind', 'flatMap'], 'then');
 alias(Just.prototype, ['inspect'], 'toString');

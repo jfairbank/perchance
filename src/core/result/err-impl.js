@@ -1,12 +1,6 @@
-import isFunction from 'lodash/isFunction';
 import inspect from 'util-inspect';
 import { alias, invariant } from '../../utils';
-
-import {
-  ERR_ACCESS_VALUE,
-  ERR_NEED_FUNCTION,
-  ERR_UNWRAP_ERR,
-} from '../errorTypes';
+import { ERR_ACCESS_VALUE, ERR_UNWRAP_ERR } from '../errorTypes';
 
 export default class Err {
   constructor(error) {
@@ -32,15 +26,9 @@ export default class Err {
 
   unwrap(_, fn) {
     invariant(
-      fn !== undefined,
+      typeof fn !== 'undefined',
       'Can only unwrap Ok',
       ERR_UNWRAP_ERR,
-    );
-
-    invariant(
-      isFunction(fn),
-      'Need function to unwrap Err',
-      ERR_NEED_FUNCTION,
     );
 
     return fn(this.error);
@@ -63,5 +51,5 @@ export default class Err {
   }
 }
 
-alias(Err.prototype, ['fmap', 'ap', 'apply', 'bind', 'andThen'], 'map');
+alias(Err.prototype, ['ap', 'apply', 'then', 'bind', 'flatMap'], 'map');
 alias(Err.prototype, ['inspect'], 'toString');

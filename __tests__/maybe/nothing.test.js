@@ -3,7 +3,6 @@ import { double, half } from './_helpers';
 
 import {
   ERR_ACCESS_VALUE,
-  ERR_NEED_FUNCTION,
   ERR_UNWRAP_NOTHING,
 } from '../../src/core/errorTypes';
 
@@ -29,9 +28,9 @@ it('ap returns Nothing', () => {
   );
 });
 
-it('bind returns Nothing', () => {
+it('then returns Nothing', () => {
   expect(
-    Nothing().bind(half),
+    Nothing().then(half),
   ).toBe(
     Nothing(),
   );
@@ -39,16 +38,6 @@ it('bind returns Nothing', () => {
 
 it('unwrap throws an error without the second function', () => {
   expect(() => Nothing().unwrap()).toThrowError(ERR_UNWRAP_NOTHING);
-});
-
-it('unwrap throws an error if the second argument is not a function', () => {
-  const args = [value, 'hello', {}, [], NaN, null];
-
-  args.forEach((arg) => {
-    expect(() => {
-      Nothing().unwrap(null, arg);
-    }).toThrowError(ERR_NEED_FUNCTION);
-  });
 });
 
 it('unwrap returns the return value of the second function', () => {

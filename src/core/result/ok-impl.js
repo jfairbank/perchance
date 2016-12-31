@@ -1,14 +1,6 @@
-import isObject from 'lodash/isObject';
-import isFunction from 'lodash/isFunction';
 import inspect from 'util-inspect';
 import { alias, invariant } from '../../utils';
-
-import {
-  ERR_ACCESS_ERROR,
-  ERR_NEED_FUNCTION,
-  ERR_NEED_MAP,
-  ERR_NEED_OBJECT,
-} from '../errorTypes';
+import { ERR_ACCESS_ERROR } from '../errorTypes';
 
 export default class Ok {
   constructor(value) {
@@ -33,35 +25,17 @@ export default class Ok {
   }
 
   ap(m) {
-    invariant(
-      isObject(m),
-      'Can only apply to objects',
-      ERR_NEED_OBJECT,
-    );
-
-    invariant(
-      'map' in m,
-      'Can only apply to objects with a `map` method',
-      ERR_NEED_MAP,
-    );
-
-    return m.map(this.value);
+    return m.map(fn => fn(this.value));
   }
 
-  bind(fn) {
+  then(fn) {
     return fn(this.value);
   }
 
   unwrap(fn) {
-    if (fn === undefined) {
+    if (typeof fn === 'undefined') {
       return this.value;
     }
-
-    invariant(
-      isFunction(fn),
-      'Need function to unwrap Ok',
-      ERR_NEED_FUNCTION,
-    );
 
     return fn(this.value);
   }
@@ -83,7 +57,6 @@ export default class Ok {
   }
 }
 
-alias(Ok.prototype, ['fmap'], 'map');
 alias(Ok.prototype, ['apply'], 'ap');
-alias(Ok.prototype, ['andThen'], 'bind');
+alias(Ok.prototype, ['bind', 'flatMap'], 'then');
 alias(Ok.prototype, ['inspect'], 'toString');

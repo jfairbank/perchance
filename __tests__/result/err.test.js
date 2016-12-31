@@ -1,11 +1,9 @@
 import zip from 'lodash/zip';
-import { Err } from '../../src';
-import { ERR_ACCESS_VALUE } from '../../src/core/errorTypes';
+import { Ok, Err } from '../../src';
+import { ERR_ACCESS_VALUE, ERR_UNWRAP_ERR } from '../../src/core/errorTypes';
 
 const error = 'whoops';
 const result = Err(error);
-
-const toUpperCase = string => string.toUpperCase();
 
 describe('constructor', () => {
   it('wraps an error', () => {
@@ -23,25 +21,49 @@ it('accessing `value` is forbidden', () => {
   expect(() => result.value).toThrowError(ERR_ACCESS_VALUE);
 });
 
-it('map returns same Err', () => {
-  const mapped = result.map(toUpperCase);
+describe('map', () => {
+  it('returns same Err', () => {
+    const toUpperCase = string => string.toUpperCase();
+    const mapped = result.map(toUpperCase);
 
-  expect(mapped).toBe(result);
-  expect(mapped.error).toBe(error);
+    expect(mapped).toBe(result);
+    expect(mapped.error).toBe(error);
+  });
 });
 
-it('ap returns same Err', () => {
-  const applied = result.ap(toUpperCase);
+describe('ap', () => {
+  it('returns same Err', () => {
+    const toUpperCase = string => string.toUpperCase();
+    const applied = result.ap(Ok(toUpperCase));
 
-  expect(applied).toBe(result);
-  expect(applied.error).toBe(error);
+    expect(applied).toBe(result);
+    expect(applied.error).toBe(error);
+  });
 });
 
-it('bind returns same Err', () => {
-  const bound = result.bind(toUpperCase);
+describe('then', () => {
+  it('returns same Err', () => {
+    const toUpperCase = string => Ok(string.toUpperCase());
+    const newResult = result.then(toUpperCase);
 
-  expect(bound).toBe(result);
-  expect(bound.error).toBe(error);
+    expect(newResult).toBe(result);
+    expect(newResult.error).toBe(error);
+  });
+});
+
+describe('unwrap', () => {
+  it('throws an error without the second function', () => {
+    expect(() => result.unwrap()).toThrowError(ERR_UNWRAP_ERR);
+  });
+
+  it('returns the return value of the second function', () => {
+    const actual = result.unwrap(
+      v => v,
+      message => message.toUpperCase(),
+    );
+
+    expect(actual).toBe(error.toUpperCase());
+  });
 });
 
 it('withDefault returns the passed-in value', () => {
